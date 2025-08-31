@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisa sobre Experiências Rurais</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f7f4 0%, #e3f2ed 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 15px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo i {
+            font-size: 48px;
+            color: #2c7a47;
+            margin-bottom: 15px;
+        }
+
+        .logo h1 {
+            color: #2c7a47;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .description {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #666;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #2c7a47 0%, #225b37 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c7a47;
+            font-size: 16px;
+        }
+
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #2c7a47;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 122, 71, 0.2);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .audio-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 5px solid #2c7a47;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 12px;
+            margin: 18px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .audio-btn {
+            padding: 14px 22px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .record-btn {
+            background: linear-gradient(135deg, #2c7a47 0%, #225b37 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(44, 122, 71, 0.2);
+        }
+
+        .record-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(44, 122, 71, 0.3);
+        }
+
+        .stop-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.2);
+        }
+
+        .stop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .audio-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .audio-status {
+            margin-top: 12px;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+            min-height: 24px;
+            font-size: 15px;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 18px;
+            border-radius: 8px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #2c7a47 0%, #225b37 100%);
+            color: white;
+            padding: 20px;
+            font-size: 18px;
+            width: 100%;
+            margin-top: 35px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 6px 12px rgba(44, 122, 71, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(44, 122, 71, 0.4);
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+            text-align: center;
+            font-size: 18px;
+            border-left: 5px solid #28a745;
+        }
+
+        .question-counter {
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #2c7a47;
+            font-size: 18px;
+            background: white;
+            padding: 12px;
+            border-radius: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-hint {
+            font-size: 14px;
+            color: #666;
+            margin-top: -10px;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .audio-controls {
+                flex-direction: column;
+            }
+
+            .audio-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+
+            .logo h1 {
+                font-size: 24px;
+            }
+
+            .description {
+                font-size: 15px;
+            }
+
+            .logo i {
+                font-size: 42px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            textarea {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <i class="fas fa-tree"></i>
+            <h1>Pesquisa sobre Experiências Rurais</h1>
+        </div>
+
+        <p class="description">Responda as perguntas abaixo e grave um áudio para cada resposta. Campos marcados com *
+            são obrigatórios.</p>
+
+        <div class="question-counter">Pergunta 1 de 7</div>
+
+        <!-- Formulário configurado para FormSubmit -->
+        <form id="ruralForm" action="https://formsubmit.co/seu-email@provedor.com" method="POST">
+            <!-- Configurações do FormSubmit -->
+            <input type="hidden" name="_subject" value="Nova resposta - Pesquisa Experiências Rurais">
+            <input type="hidden" name="_template" value="table">
+            <input type="text" name="_honey" style="display:none">
+            <input type="hidden" name="_autoresponse"
+                value="Obrigado por participar da nossa pesquisa! Suas respostas foram recebidas com sucesso.">
+
+            <!-- Pergunta 1 -->
+            <div class="form-group">
+                <label>1. O que mais te chama atenção quando você pensa em sair da cidade e passar uns dias no
+                    interior/zona rural?</label>
+                <div class="input-hint">Escreva sua resposta ou grave um áudio</div>
+                <textarea name="atracao_rural" placeholder="Digite sua resposta aqui..."></textarea>
+
+                <div class="audio-section">
+                    <div class="audio-controls">
+                        <button type="button" class="audio-btn record-btn" data-question="1">
+                            <i class="fas fa-microphone"></i> Gravar Áudio
+                        </button>
+                        <button type="button" class="audio-btn stop-btn" data-question="1" disabled>
+                            <i class="fas fa-stop"></i> Parar
+                        </button>
+                        <button type="button" class="audio-btn play-btn" data-question="1" disabled>
+                            <i class="fas fa-play"></i> Ouvir
+                        </button>
+                    </div>
+                    <div class="audio-status" data-question="1">Pronto para gravar</div>
+                    <audio class="audio-playback" data-question="1" controls></audio>
+                </div>
+            </div>
+
+            <!-- Pergunta 2 -->
+            <div class="form-group">
+                <label>2. Quando procura estes locais, você usa alguma plataforma digital? Quais? Quais problemas você
+                    enxerga nessas plataformas?</label>
+                <div class="input-hint">Escreva sua resposta ou grave um áudio</div>
+                <textarea name="plataformas_digitais" placeholder="Digite sua resposta aqui..."></textarea>
+
+                <div class="audio-section">
+                    <div class="audio-controls">
+                        <button type="button" class="audio-btn record-btn" data-question="2">
+                            <i class="fas fa-microphone"></i> Gravar Áudio
+                        </button>
+                        <button type="button" class="audio-btn stop-btn" data-question="2" disabled>
+                            <i class="fas fa-stop"></i> Parar
+                        </button>
+                        <button type="button" class="audio-btn play-btn" data-question="2" disabled>
+                            <i class="fas fa-play"></i> Ouvir
+                        </button>
+                    </div>
+                    <div class="audio-status" data-question="2">Pronto para gravar</div>
+                    <audio class="audio-playback" data-question="2" controls></audio>
+                </div>
+            </div>
+
+            <!-- Pergunta 3 -->
+            <div class="form-group">
+                <label>3. Além do dinheiro e do tempo, o que te impediria de ir conhecer este lugar hoje?</label>
+                <div class="input-hint">Escreva sua resposta ou grave um áudio</div>
+                <textarea name="dificuldades" placeholder="Digite sua resposta aqui..."></textarea>
+
+                <div class="audio-section">
+                    <div class="audio-controls">
+                        <button type="button" class="audio-btn record-btn" data-question="3">
+                            <i class="fas fa-microphone"></i> Gravar Áudio
+                        </button>
+                        <button type="button" class="audio-btn stop-btn" data-question="3" disabled>
+                            <i class="fas fa-stop"></i> Parar
+                        </button>
+                        <button type="button" class="audio-btn play-btn" data-question="3" disabled>
+                            <i class="fas fa-play"></i> Ouvir
+                        </button>
+                    </div>
+                    <div class="audio-status" data-question="3">Pronto para gravar</div>
+                    <audio class="audio-playback" data-question="3" controls></audio>
+                </div>
+            </div>
+
+            <!-- Pergunta 4 -->
+            <div class="form-group">
+                <label>4. O que te deixa mais em dúvida quando se trata de viajar para o interior? Insegurança,
+                    desafios? O que te preocupa?</label>
+                <div class="input-hint">Escreva sua resposta ou grave um áudio</div>
+                <textarea name="duvidas" placeholder="Digite sua resposta aqui..."></textarea>
+
+                <div class="audio-section">
+                    <div class="audio-controls">
+                        <button type="button" class="audio-btn record-btn" data-question="4">
+                            <i class="fas fa-microphone"></i> Gravar Áudio
+                        </button>
+                        <button type="button" class="audio-btn stop-btn" data-question="4" disabled>
+                            <i class="fas fa-stop"></i> Parar
+                        </button>
+                        <button type="button" class="audio-btn play-btn" data-question="4" disabled>
+                            <i class="fas fa-play"></i> Ouvir
+                        </button>
+                    </div>
+                    <div class="audio-status" data-question="4">Pronto para gravar</div>
+                    <audio class="audio-playback" data-question="4" controls></audio>
+                </div>
+            </div>
+
+            <!-- Pergunta 5 -->
+            <div class="form-group">
+                <label>5. Se fosse indicar um amigo para uma vivência rural, o que faria para dar um "empurrãozinho"
+                    para ele ir?</label>
+                <div class="input-hint">Escreva sua resposta ou grave um áudio</div>
+                <textarea name="indicacao" placeholder="Digite sua resposta aqui..."></textarea>
+
+                <div class="audio-section">
+                    <div class="audio-controls">
+                        <button type="button" class="audio-btn record-btn" data-question="5">
+                            <i class="fas fa-microphone"></i> Gravar Áudio
+                        </button>
+                        <button type="button" class="audio-btn stop-btn" data-question="5" disabled>
+                            <i class="fas fa-stop"></i> Parar
+                        </button>
+                        <button type="button" class="audio-btn play-btn" data-question="5" disabled>
+                            <i class="fas fa-play"></i> Ouvir
+                        </button>
+                    </div>
+                    <div class="audio-status" data-question="5">Pronto para gravar</div>
+                    <audio class="audio-playback" data-question="5" controls></audio>
+                </div>
+            </div>
+
+            <!-- Pergunta 6 -->
+            <div class="form-group">
+                <label>6. Quanto você acha justo pagar por uma experiência rural completa (processos da cafeicultura,
+                    trilhas a cavalo, ordenha de vaca, etc.)?</label>
+                <div class="input-hint">Ex: R$ 200 por dia</div>
+                <input type="text" name="valor_experiencia" placeholder="Ex: R$ 200 por dia">
+
+                <div class="audio-section">
+                    <div class="audio-controls">
+                        <button type="button" class="audio-btn record-btn" data-question="6">
+                            <i class="fas fa-microphone"></i> Gravar Áudio
+                        </button>
+                        <button type="button" class="audio-btn stop-btn" data-question="6" disabled>
+                            <i class="fas fa-stop"></i> Parar
+                        </button>
+                        <button type="button" class="audio-btn play-btn" data-question="6" disabled>
+                            <i class="fas fa-play"></i> Ouvir
+                        </button>
+                    </div>
+                    <div class="audio-status" data-question="6">Pronto para gravar</div>
+                    <audio class="audio-playback" data-question="6" controls></audio>
+                </div>
+            </div>
+
+            <!-- Dados Pessoais no Final -->
+            <div class="form-group">
+                <div class="section-title">Dados Pessoais</div>
+
+                <label for="nome" class="required">Nome completo ou apelido</label>
+                <input type="text" id="nome" name="nome" required>
+                <div class="error" id="nome-error">Por favor, informe seu nome ou apelido</div>
+
+                <label for="cidade" class="required">Cidade onde mora</label>
+                <input type="text" id="cidade" name="cidade" required>
+                <div class="error" id="cidade-error">Por favor, informe sua cidade</div>
+
+                <label for="instagram" class="required">Instagram</label>
+                <input type="text" id="instagram" name="instagram" required placeholder="@seuusuario">
+                <div class="error" id="instagram-error">Por favor, informe seu Instagram</div>
+
+                <label for="whatsapp" class="required">WhatsApp</label>
+                <input type="tel" id="whatsapp" name="whatsapp" required placeholder="(11) 99999-9999">
+                <div class="error" id="whatsapp-error">Por favor, informe seu WhatsApp</div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Enviar Respostas
+            </button>
+        </form>
+
+        <div class="success-message" id="success-message">
+            <i class="fas fa-check-circle"></i><br>
+            Obrigado por participar da pesquisa! Suas respostas foram enviadas com sucesso.
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Elementos do DOM
+            const form = document.getElementById('ruralForm');
+            const successMessage = document.getElementById('success-message');
+
+            // Objeto para armazenar as gravações de cada pergunta
+            const audioRecordings = {};
+
+            // Inicializar gravadores para cada pergunta
+            const initializeRecorder = (questionNum) => {
+                const recordBtn = document.querySelector(`.record-btn[data-question="${questionNum}"]`);
+                const stopBtn = document.querySelector(`.stop-btn[data-question="${questionNum}"]`);
+                const playBtn = document.querySelector(`.play-btn[data-question="${questionNum}"]`);
+                const audioPlayback = document.querySelector(`.audio-playback[data-question="${questionNum}"]`);
+                const audioStatus = document.querySelector(`.audio-status[data-question="${questionNum}"]`);
+
+                let mediaRecorder;
+                let audioChunks = [];
+
+                // Verificar suporte à gravação de áudio
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    audioStatus.textContent = "Seu navegador não suporta gravação de áudio.";
+                    recordBtn.disabled = true;
+                    return;
+                }
+
+                // Iniciar gravação
+                recordBtn.addEventListener('click', async () => {
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        mediaRecorder = new MediaRecorder(stream);
+
+                        mediaRecorder.ondataavailable = (event) => {
+                            audioChunks.push(event.data);
+                        };
+
+                        mediaRecorder.onstop = () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                            const audioUrl = URL.createObjectURL(audioBlob);
+                            audioPlayback.src = audioUrl;
+
+                            // Armazenar o blob de áudio para esta pergunta
+                            audioRecordings[questionNum] = audioBlob;
+
+                            // Parar todas as trilhas de áudio
+                            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                        };
+
+                        mediaRecorder.start();
+                        recordBtn.disabled = true;
+                        stopBtn.disabled = false;
+                        playBtn.disabled = true;
+                        audioStatus.textContent = 'Gravando... Fale agora.';
+
+                    } catch (error) {
+                        console.error('Erro ao acessar o microfone:', error);
+                        audioStatus.textContent = 'Erro ao acessar o microfone. Verifique as permissões.';
+                    }
+                });
+
+                // Parar gravação
+                stopBtn.addEventListener('click', () => {
+                    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                        mediaRecorder.stop();
+                        recordBtn.disabled = false;
+                        stopBtn.disabled = true;
+                        playBtn.disabled = false;
+                        audioStatus.textContent = 'Gravação concluída. Ouça abaixo:';
+                    }
+                });
+
+                // Reproduzir gravação
+                playBtn.addEventListener('click', () => {
+                    if (audioRecordings[questionNum]) {
+                        audioPlayback.play();
+                    }
+                });
+            };
+
+            // Inicializar gravadores para cada pergunta
+            for (let i = 1; i <= 6; i++) {
+                initializeRecorder(i);
+            }
+
+            // Validar e enviar formulário
+            form.addEventListener('submit', (e) => {
+                // Validar campos obrigatórios
+                let isValid = true;
+                const requiredFields = ['nome', 'cidade', 'instagram', 'whatsapp'];
+
+                requiredFields.forEach(field => {
+                    const input = document.getElementById(field);
+                    const error = document.getElementById(`${field}-error`);
+
+                    if (!input.value.trim()) {
+                        error.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        error.style.display = 'none';
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    alert('Por favor, preencha todos os campos obrigatórios.');
+                    return;
+                }
+
+                // O FormSubmit cuidará do envio automaticamente
+                // Você pode adicionar aqui qualquer lógica adicional antes do envio
+
+                // Mostrar mensagem de sucesso
+                setTimeout(() => {
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    window.scrollTo(0, 0);
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+
+</html>
